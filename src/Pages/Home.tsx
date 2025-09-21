@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard"
+import { useNavigate } from "react-router";
 
 const Home = ()=>{
+  const navigate = useNavigate()
   const [products, setProducts] = useState<any[]>([]);
 
   useEffect(() => {
@@ -10,6 +12,11 @@ const Home = ()=>{
       .then((data) => setProducts(data.products))
       .catch((err) => console.error("Error fetching products:", err));
   }, []);
+  
+  const handleLogout = ()=>{
+    sessionStorage.setItem("isLoggedIn", "false");
+    navigate("/")
+  }
     return(
         <>
   <meta charSet="UTF-8" />
@@ -59,7 +66,8 @@ const Home = ()=>{
         </a>
       </div>
       <div>
-        <button className="mt-4 inline-block rounded border border-gray-400 px-4 py-2 text-sm leading-none text-gray-300 hover:bg-gray-300 hover:text-gray-800 lg:mt-0">
+        <button className="mt-4 inline-block rounded border border-gray-400 px-4 py-2 text-sm leading-none text-gray-300 hover:bg-gray-300 hover:text-gray-800 lg:mt-0"
+        onClick={handleLogout}>
           Logout
         </button>
       </div>
@@ -75,6 +83,7 @@ const Home = ()=>{
           {products.map((p) => (
             <ProductCard
               key={p.id}
+              id={p.id}
               image={p.thumbnail}
               title={p.title}
               price={p.price}
@@ -84,7 +93,7 @@ const Home = ()=>{
       </div>
       {/* <Footer /> */}
     </>
-  );
+  ;
   {/* Footer Section */}
   <footer className="relative z-50 bg-[#191F33]">
     <div className="flex flex-col items-center px-4 py-12">

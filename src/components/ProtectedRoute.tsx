@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 
 const ProtectedRoute = ({children}:any) => {
-    const isAuthenticated = localStorage.getItem("isLoggedIn")
+    const isAuthenticated = sessionStorage.getItem("isLoggedIn") === "true";
   
     if (!isAuthenticated) {
       return <Navigate to="/" replace />

@@ -34,7 +34,7 @@ const Signin = () => {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("Data :", data);
-      localStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("isLoggedIn", "true");
       navigate("/home");
     }
   };

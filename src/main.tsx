@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <Home />
         </ProtectedRoute>
         } />
-      <Route path="/product/:id" element={<ProductDetail />} />
+      <Route path="/product/:id" element={ <ProtectedRoute><ProductDetail /></ProtectedRoute>} />
       <Route path='/login' element={<Login/>}></Route>
     </Routes>
     {/* <App /> */}

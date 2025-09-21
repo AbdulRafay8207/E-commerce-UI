@@ -1,4 +1,26 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
+
 const ProductDetail = ()=>{
+  const navigate = useNavigate()
+  const { id } = useParams();
+  const [product, setProduct] = useState  <any>(null);
+
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => setProduct(data))
+      .catch((err) => console.error("Error fetching product details:", err));
+  }, [id]);
+
+  const handleLogout = ()=>{
+    sessionStorage.setItem("isLoggedIn", "false");
+    navigate("/")
+  }
+
+  if (!product) {
+    return <div className="text-center py-10 text-xl">Loading product details...</div>;
+  }
     return(
         <>
   <meta charSet="UTF-8" />
@@ -48,52 +70,38 @@ const ProductDetail = ()=>{
         </a>
       </div>
       <div>
-        <button className="mt-4 inline-block rounded border border-gray-400 px-4 py-2 text-sm leading-none text-gray-300 hover:bg-gray-300 hover:text-gray-800 lg:mt-0">
+        <button className="mt-4 inline-block rounded border border-gray-400 px-4 py-2 text-sm leading-none text-gray-300 hover:bg-gray-300 hover:text-gray-800 lg:mt-0"
+        onClick={handleLogout}>
           Logout
         </button>
       </div>
     </div>
   </nav>
   {/* Hero Section */}
-  <div className="bg-[#F4F4F4]">
-    <div className="mx-auto max-w-3xl px-3 py-5 text-center md:py-10">
-      <h1 className="text-3xl font-semibold leading-tight text-[#1E1E1E] md:text-[40px]">
-        All-in-One E-commerce App
-      </h1>
-      <h2 className="mt-5 text-lg font-medium text-[#1E1E1E]">
-        Discover premium products and enjoy shopping with us. Risk Free
-        Shopping!
-      </h2>
-    </div>
-  </div>
-  {/* Product Details */}
-  <div className="container mx-auto max-w-6xl p-6">
-    <div className="flex flex-col overflow-hidden rounded-lg border border-green-200 bg-white lg:flex-row">
-      {/* Product Image */}
-      <div className="lg:w-1/2">
-        <img
-          className="h-96 w-full object-cover"
-          src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
-          alt="Product Image"
-        />
+        {/* Product Detail Layout */}
+      <div className="container mx-auto max-w-6xl p-6">
+        <div className="flex flex-col overflow-hidden rounded-lg border border-green-200 bg-white lg:flex-row">
+          {/* Product Image */}
+          <div className="lg:w-1/2">
+            <img
+              className="h-96 w-full object-cover"
+              src={product.thumbnail}
+              alt={product.title}
+            />
+          </div>
+          {/* Product Info */}
+          <div className="p-6 lg:w-1/2">
+            <h2 className="mb-4 text-3xl font-bold text-gray-800">{product.title}</h2>
+            <p className="mb-2 text-sm text-gray-500">Category: {product.category}</p>
+            <p className="mb-6 text-gray-700">{product.description}</p>
+            <p className="mb-6 text-2xl font-semibold text-gray-800">${product.price}</p>
+            {/* Buy Now Button */}
+            <button className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+              Add to Cart
+            </button>
+          </div>
+        </div>
       </div>
-      {/* Product Info */}
-      <div className="p-6 lg:w-1/2">
-        <h2 className="mb-4 text-3xl font-bold text-gray-800">Product Title</h2>
-        <p className="mb-2 text-sm text-gray-500">Category: Electronics</p>
-        <p className="mb-6 text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          ultrices massa ac auctor vestibulum. Aenean at nisi nec nisl luctus
-          lacinia.
-        </p>
-        <p className="mb-6 text-2xl font-semibold text-gray-800">$99.99</p>
-        {/* Buy Now Button */}
-        <button className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
   {/* Footer Section */}
   <footer className="relative z-50 bg-[#191F33]">
     <div className="flex flex-col items-center px-4 py-12">
